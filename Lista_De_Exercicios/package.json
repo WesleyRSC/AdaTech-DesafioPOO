@@ -1,0 +1,20 @@
+{
+  "name": "lista_de_exercicios",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Execicio_001.js",
+  "scripts": {
+    "exercicio_1": "npx ts-node-dev exercicio_1/script.ts",
+    "exercicio_2": "npx ts-node-dev exercicio_2/script.ts",
+    "exercicio_3": "npx ts-node-dev exercicio_3/script.ts",
+    "exercicio_4": "npx ts-node-dev exercicio_4/script.ts",
+    "exercicio_5": "npx ts-node-dev exercicio_5/script.ts",
+    "exercicio_6": "npx ts-node-dev exercicio_6/script.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.4.2"
+  }
+}
