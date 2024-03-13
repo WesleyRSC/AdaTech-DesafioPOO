@@ -5,7 +5,8 @@ let newBanco = new BancoDeDados ()
 
 newBanco.AdicionarPessoa(new Pessoa("Wesley", 19, "wesleyprofessor@email.com"))
 newBanco.AdicionarPessoa(new Pessoa("Thais", 15, "Thaisprofessora@email.com"))
-newBanco.AdicionarPessoa(new Pessoa("Cleiton", 35, "cleitonaluno@email.com"))
+newBanco.AdicionarPessoa(new Pessoa("Cleiton", 33, "cleitonaluno@email.com"))
+newBanco.AdicionarPessoa(new Pessoa("Naady", 22, "naadyprofessora@email.com"))
 
 
 newBanco.ListarPessoas()
