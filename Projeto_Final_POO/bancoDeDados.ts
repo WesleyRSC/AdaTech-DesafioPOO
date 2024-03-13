@@ -27,10 +27,8 @@ export class BancoDeDados {
     email: string | undefined
   ) {
     let atualizada: boolean = false;
-    let pessoaExistente = this.BuscarPorNome(nome);
-    if (pessoaExistente == undefined) {
-      throw new Error("Não foi encontrada uma pessoa com este nome");
-    }
+    let pessoaExistente = this.BuscarPorNome(nome)!;
+
     if (idade != undefined && idade > 0 && pessoaExistente.idade != idade) {
       pessoaExistente.idade = idade;
       atualizada = true;

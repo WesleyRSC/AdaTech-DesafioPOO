@@ -5,7 +5,9 @@ export class Pessoa {
 
   constructor(nome: string, idade: number, email: string) {
     this.ValidarNome(nome);
-
+    this.ValidarIdade(idade);
+    this.ValidarEmail(email);
+    
     this.Nome = nome;
     this.Idade = idade;
     this.Email = email;

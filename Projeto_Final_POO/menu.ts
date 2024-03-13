@@ -6,7 +6,7 @@ const prompt = promptSync();
 export class Menu {
   private DataBase = new BancoDeDados();
 
-  exibirMenu(): void {
+  private exibirMenu(): void {
     console.log("########### MENU ###########\n");
     console.log("1 • Listar todas as pessoas.");
     console.log("2 • Adicionar pessoa.");
