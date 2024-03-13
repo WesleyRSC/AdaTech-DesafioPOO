@@ -68,7 +68,7 @@ export class Menu extends BancoDeDados{
 
       console.clear();
     } catch (error) {
-      console.log(error, `\n`);
+      console.log(this.getErrorMessage(error), `\n`);
     }
   }
 
@@ -88,7 +88,7 @@ export class Menu extends BancoDeDados{
 
       console.clear();
     } catch (error) {
-      console.log(error, `\n`);
+      console.log(this.getErrorMessage(error), `\n`);
     }
   }
 
@@ -106,7 +106,7 @@ export class Menu extends BancoDeDados{
 
       console.clear();
     } catch (error) {
-      console.log(error, `\n`);
+      console.log(this.getErrorMessage(error), `\n`);
     }
   }
 
@@ -125,11 +125,16 @@ export class Menu extends BancoDeDados{
 
       console.clear();
     } catch (error) {
-      console.log(error, `\n`);
+      console.log(this.getErrorMessage(error), `\n`);
     }
   }
 
   private ChamarListarPessoas() {
     this.ListarPessoas();
+  }
+
+  private getErrorMessage(error: unknown) {
+    if (error instanceof Error) return `\nERRO - ${error.message}\n`
+    return String(error)
   }
 }
