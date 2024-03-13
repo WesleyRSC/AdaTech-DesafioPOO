@@ -35,7 +35,7 @@ export class BancoDeDados {
       pessoaExistente.idade = idade;
       atualizada = true;
     }
-    if (email != undefined && pessoaExistente.email != email) {
+    if (email != undefined && email.trim()=="" && pessoaExistente.email != email) {
       pessoaExistente.email = email;
       atualizada = true;
     }
@@ -44,6 +44,9 @@ export class BancoDeDados {
       let index = this.Dados.findIndex((pessoa) => pessoa.nome == nome);
       this.Dados.splice(index, 1, pessoaExistente);
       console.log(`Pessoa: ${pessoaExistente.nome} - Atualizada com sucesso\n`);
+    }
+    else{
+      console.log("\nNão foram informados email e idade diferentes do cadastro original ou com dados a serem alterados ")
     }
   }
 
