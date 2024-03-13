@@ -3,7 +3,7 @@ import { Pessoa } from "./pessoa";
 export class BancoDeDados {
   private Dados: Array<Pessoa> = [];
 
-  public AdicionarPessoa(novaPessoa: Pessoa) {
+  protected AdicionarPessoa(novaPessoa: Pessoa) {
     if (this.Dados.find((pessoa) => pessoa.nome == novaPessoa.nome)) {
       throw new Error("Já existe cadastro de uma pessoa com este nome");
     }
@@ -11,17 +11,17 @@ export class BancoDeDados {
     console.log(` Pessoa: ${novaPessoa.nome} - Adicionada com sucesso\n`);
   }
 
-  public ListarPessoas() {
+  protected ListarPessoas() {
     console.table(this.Dados);
   }
 
-  public BuscarPorNome(nome: string): Pessoa | undefined {
+  protected BuscarPorNome(nome: string): Pessoa | undefined {
     let pessoaEncontrada = this.Dados.find((pessoa) => pessoa.nome == nome);
     if (pessoaEncontrada) return pessoaEncontrada;
     else throw new Error("Não foi encontrada uma pessoa com este nome");
   }
 
-  public AtualizarPessoa(
+  protected AtualizarPessoa(
     nome: string,
     idade: number | undefined,
     email: string | undefined
@@ -33,7 +33,7 @@ export class BancoDeDados {
       pessoaExistente.idade = idade;
       atualizada = true;
     }
-    if (email != undefined && email.trim()=="" && pessoaExistente.email != email) {
+    if (email != undefined && email?.trim()=="" && pessoaExistente.email != email) {
       pessoaExistente.email = email;
       atualizada = true;
     }
@@ -48,7 +48,7 @@ export class BancoDeDados {
     }
   }
 
-  public DeletarPessoa(nome: string) {
+  protected DeletarPessoa(nome: string) {
     if (this.Dados.length == 0) {
       console.log(
         "Sua base de dados está vazia, adicione uma pessoa antes de continuar"

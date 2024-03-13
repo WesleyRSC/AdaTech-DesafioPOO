@@ -3,8 +3,7 @@ import { Pessoa } from "./pessoa";
 import promptSync from "prompt-sync";
 const prompt = promptSync();
 
-export class Menu {
-  private DataBase = new BancoDeDados();
+export class Menu extends BancoDeDados{
 
   private exibirMenu(): void {
     console.log("########### MENU ###########\n");
@@ -26,20 +25,20 @@ export class Menu {
       console.log("\n");
       escolha = opcaoUsuario;
 
-      switch (escolha.trim()) {
+      switch (escolha?.trim()) {
         case "1":
-          this.ListarPessoas();
+          this.ChamarListarPessoas();
           break;
         case "2":
-          this.AdicionarPessoa();
+          this.ChamarAdicionarPessoa();
           break;
         case "3":
-          this.AtualizarPessoa();
+          this.ChamarAtualizarPessoa();
         case "4":
-          this.BuscarPessoaPorNome();
+          this.ChamarBuscarPessoaPorNome();
           break;
         case "5":
-          this.DeletarPessoa();
+          this.ChamarDeletarPessoa();
           break;
         case "0":
           console.log("Obrigado por utilizar nosso sistema");
@@ -54,7 +53,7 @@ export class Menu {
     } while (continuar);
   }
 
-  private AdicionarPessoa() {
+  private ChamarAdicionarPessoa() {
     try {
       let continuarAdicionando: string = "S";
       do {
@@ -63,7 +62,7 @@ export class Menu {
           Number(prompt("Digite a idade da pessoa: ")),
           prompt("Digite o email da pessoa: ")!
         );
-        this.DataBase.AdicionarPessoa(pessoa);
+        this.AdicionarPessoa(pessoa);
         continuarAdicionando = prompt("Deseja Adicionar outra pessoa? (S/N) ")!;
       } while (continuarAdicionando.toUpperCase().trim() == "S");
 
@@ -73,13 +72,13 @@ export class Menu {
     }
   }
 
-  private AtualizarPessoa() {
+  private ChamarAtualizarPessoa() {
     try {
       let continuarAtualizando: string = "S";
       do {
-        this.ListarPessoas();
+        this.ChamarListarPessoas();
         console.log("\n");
-        this.DataBase.AtualizarPessoa(
+        this.AtualizarPessoa(
           prompt("Digite o nome da pessoa que deseja atualizar: "),
           Number(prompt("Digite a idade da pessoa: ")),
           prompt("Digite o email da pessoa: ")
@@ -93,13 +92,13 @@ export class Menu {
     }
   }
 
-  private DeletarPessoa() {
+  private ChamarDeletarPessoa() {
     try {
       let continuarExcluindo: string = "S";
       do {
-        this.ListarPessoas();
+        this.ChamarListarPessoas();
         console.log("\n");
-        this.DataBase.DeletarPessoa(
+        this.DeletarPessoa(
           prompt("Digite o nome da pessoa que deseja excluir: ")
         );
         continuarExcluindo = prompt("Deseja excluir outra pessoa? (S/N) ")!;
@@ -111,11 +110,11 @@ export class Menu {
     }
   }
 
-  private BuscarPessoaPorNome() {
+  private ChamarBuscarPessoaPorNome() {
     try {
       let continuarBuscando: string = "S";
       do {
-        let pessoa = this.DataBase.BuscarPorNome(
+        let pessoa = this.BuscarPorNome(
           prompt("Digite o nome da pessoa: ")
         );
 
@@ -130,7 +129,7 @@ export class Menu {
     }
   }
 
-  private ListarPessoas() {
-    this.DataBase.ListarPessoas();
+  private ChamarListarPessoas() {
+    this.ListarPessoas();
   }
 }
