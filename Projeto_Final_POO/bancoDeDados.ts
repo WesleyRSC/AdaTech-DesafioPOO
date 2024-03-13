@@ -8,6 +8,7 @@ export class BancoDeDados {
       throw new Error("Já existe cadastro de uma pessoa com este nome");
     }
     this.Dados.push(novaPessoa);
+    console.log(` Pessoa: ${novaPessoa.nome} - Adicionada com sucesso\n`);
   }
 
   public ListarPessoas() {
@@ -25,26 +26,40 @@ export class BancoDeDados {
     idade: number | undefined,
     email: string | undefined
   ) {
+    let atualizada: boolean = false;
     let pessoaExistente = this.BuscarPorNome(nome);
     if (pessoaExistente == undefined) {
       throw new Error("Não foi encontrada uma pessoa com este nome");
     }
-    if (idade != undefined && pessoaExistente.idade != idade) {
+    if (idade != undefined && idade > 0 && pessoaExistente.idade != idade) {
       pessoaExistente.idade = idade;
+      atualizada = true;
     }
     if (email != undefined && pessoaExistente.email != email) {
       pessoaExistente.email = email;
+      atualizada = true;
+    }
+
+    if (atualizada) {
+      let index = this.Dados.findIndex((pessoa) => pessoa.nome == nome);
+      this.Dados.splice(index, 1, pessoaExistente);
+      console.log(`Pessoa: ${pessoaExistente.nome} - Atualizada com sucesso\n`);
     }
   }
 
   public DeletarPessoa(nome: string) {
+    if (this.Dados.length == 0) {
+      console.log(
+        "Sua base de dados está vazia, adicione uma pessoa antes de continuar"
+      );
+      return;
+    }
     let pessoaExistente = this.BuscarPorNome(nome);
     if (pessoaExistente == undefined) {
       throw new Error("Não foi encontrada uma pessoa com este nome");
     }
     let index = this.Dados.findIndex((pessoa) => pessoa.nome == nome);
-    this.Dados.splice(index, 1)
-    console.log(`${nome} deletado com sucesso`);
-    
+    this.Dados.splice(index, 1);
+    console.log(`Pessoa: ${nome} - Excluída com sucesso\n`);
   }
 }

@@ -1,52 +1,136 @@
-import { BancoDeDados } from './bancoDeDados'
-import { Pessoa } from './pessoa'
+import { BancoDeDados } from "./bancoDeDados";
+import { Pessoa } from "./pessoa";
+import promptSync from "prompt-sync";
+const prompt = promptSync();
 
-let newBanco = new BancoDeDados ()
+export class Menu {
+  private DataBase = new BancoDeDados();
 
-function exibirMenu(): void {
-    console.log("########### MENU ###########");
+  exibirMenu(): void {
+    console.log("########### MENU ###########\n");
     console.log("1 • Listar todas as pessoas.");
     console.log("2 • Adicionar pessoa.");
     console.log("3 • Atualizar pessoa.");
     console.log("4 • Buscar pessoa pelo nome.");
     console.log("5 • Deletar pessoa.");
-    console.log("0 • SAIR");
-    console.log("############################");
-}
+    console.log("0 • SAIR\n");
+  }
 
-function main(): void {
-    let escolha: number;
-
-    exibirMenu();
-
+  launchMenu(): void {
+    let escolha: string;
+    console.clear();
+    let continuar: boolean = true;
     do {
-        const opcaoUsuario = prompt("Digite a opção desejada:")
-        escolha = opcaoUsuario ? parseInt(opcaoUsuario) : 10;
+      this.exibirMenu();
+      const opcaoUsuario = prompt("Digite a opção desejada: ")!;
+      console.log("\n");
+      escolha = opcaoUsuario;
 
-        switch (escolha) {
-            case 1:
-                newBanco.ListarPessoas();
-                break;
-            case 2:
-                newBanco.AdicionarPessoa(new Pessoa("Wesley", 19, "wesleyprofessor@email.com"));
-                break;
-            case 3:
-                newBanco.AtualizarPessoa("Wesley", 20, "wesleymestre@email.com");
-                break;
-            case 4:
-                newBanco.BuscarPorNome("Wesley");
-                break;
-            case 5:
-                newBanco.DeletarPessoa("Cleiton");
-                break;
-            case 0:
-                console.log("Obrigado por utilizar nosso sistema")
-                break;
-            default:
-                console.log("Essa opção não existe! Por favor, digite novamente ou digite 0 para sair");
-                break;
-        }
-    } while (escolha < 0 || escolha > 5);
+      switch (escolha.trim()) {
+        case "1":
+          this.ListarPessoas();
+          break;
+        case "2":
+          this.AdicionarPessoa();
+          break;
+        case "3":
+          this.AtualizarPessoa();
+        case "4":
+          this.BuscarPessoaPorNome();
+          break;
+        case "5":
+          this.DeletarPessoa();
+          break;
+        case "0":
+          console.log("Obrigado por utilizar nosso sistema");
+          continuar = false;
+          break;
+        default:
+          console.log(
+            "Essa opção não existe! Por favor, digite novamente ou digite 0 para sair\n"
+          );
+          break;
+      }
+    } while (continuar);
+  }
+
+  private AdicionarPessoa() {
+    try {
+      let continuarAdicionando: string = "S";
+      do {
+        let pessoa: Pessoa = new Pessoa(
+          prompt("Digite o nome da pessoa: ")!,
+          Number(prompt("Digite a idade da pessoa: ")),
+          prompt("Digite o email da pessoa: ")!
+        );
+        this.DataBase.AdicionarPessoa(pessoa);
+        continuarAdicionando = prompt("Deseja Adicionar outra pessoa? (S/N) ")!;
+      } while (continuarAdicionando.toUpperCase().trim() == "S");
+
+      console.clear();
+    } catch (error) {
+      console.log(error, `\n`);
+    }
+  }
+
+  private AtualizarPessoa() {
+    try {
+      let continuarAtualizando: string = "S";
+      do {
+        this.ListarPessoas();
+        console.log("\n");
+        this.DataBase.AtualizarPessoa(
+          prompt("Digite o nome da pessoa que deseja atualizar: "),
+          Number(prompt("Digite a idade da pessoa: ")),
+          prompt("Digite o email da pessoa: ")
+        );
+        continuarAtualizando = prompt("Deseja Atualizar outra pessoa? (S/N) ")!;
+      } while (continuarAtualizando.toUpperCase().trim() == "S");
+
+      console.clear();
+    } catch (error) {
+      console.log(error, `\n`);
+    }
+  }
+
+  private DeletarPessoa() {
+    try {
+      let continuarExcluindo: string = "S";
+      do {
+        this.ListarPessoas();
+        console.log("\n");
+        this.DataBase.DeletarPessoa(
+          prompt("Digite o nome da pessoa que deseja excluir: ")
+        );
+        continuarExcluindo = prompt("Deseja excluir outra pessoa? (S/N) ")!;
+      } while (continuarExcluindo.toUpperCase().trim() == "S");
+
+      console.clear();
+    } catch (error) {
+      console.log(error, `\n`);
+    }
+  }
+
+  private BuscarPessoaPorNome() {
+    try {
+      let continuarBuscando: string = "S";
+      do {
+        let pessoa = this.DataBase.BuscarPorNome(
+          prompt("Digite o nome da pessoa: ")
+        );
+
+        console.log(pessoa);
+
+        continuarBuscando = prompt("Deseja Buscar outra pessoa? (S/N) ")!;
+      } while (continuarBuscando.toUpperCase().trim() == "S");
+
+      console.clear();
+    } catch (error) {
+      console.log(error, `\n`);
+    }
+  }
+
+  private ListarPessoas() {
+    this.DataBase.ListarPessoas();
+  }
 }
-
-main();
