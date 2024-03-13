@@ -1,52 +1,128 @@
-import { BancoDeDados } from './bancoDeDados'
-import { Pessoa } from './pessoa'
+import { BancoDeDados } from "./bancoDeDados";
+import { Pessoa } from "./pessoa";
+import * as readline from 'readline';
 
-let newBanco = new BancoDeDados ()
+class Menu {
+  private bancoDeDados: BancoDeDados;
+  private readlineInterface: readline.Interface;
 
-function exibirMenu(): void {
-    console.log("########### MENU ###########");
-    console.log("1 • Listar todas as pessoas.");
-    console.log("2 • Adicionar pessoa.");
-    console.log("3 • Atualizar pessoa.");
-    console.log("4 • Buscar pessoa pelo nome.");
-    console.log("5 • Deletar pessoa.");
-    console.log("0 • SAIR");
-    console.log("############################");
+  constructor() {
+    this.bancoDeDados = new BancoDeDados();
+    this.readlineInterface = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+  }
+
+  public exibirMenu() {
+    console.log("----- MENU -----");
+    console.log("1. Adicionar Pessoa");
+    console.log("2. Listar Pessoas");
+    console.log("3. Buscar Pessoa pelo Nome");
+    console.log("4. Atualizar Pessoa");
+    console.log("5. Deletar Pessoa");
+    console.log("6. Sair");
+
+    this.readlineInterface.question("Escolha uma opção: ", (opcao) => {
+      this.processarOpcao(opcao);
+    });
+  }
+
+  private processarOpcao(opcao: string) {
+    switch (opcao) {
+      case "1":
+        this.adicionarPessoa();
+        break;
+      case "2":
+        this.listarPessoas();
+        break;
+      case "3":
+        this.buscarPorNome();
+        break;
+      case "4":
+        this.atualizarPessoa();
+        break;
+      case "5":
+        this.deletarPessoa();
+        break;
+      case "6":
+        console.log("Saindo...");
+        this.readlineInterface.close();
+        break;
+      default:
+        console.log("Opção inválida.");
+        this.exibirMenu();
+        break;
+    }
+  }
+
+  private adicionarPessoa() {
+    this.readlineInterface.question("Nome: ", (nome) => {
+      this.readlineInterface.question("Idade: ", (idadeInput) => {
+        const idade = parseInt(idadeInput);
+        this.readlineInterface.question("Email: ", (email) => {
+          try {
+            const novaPessoa = new Pessoa(nome, idade, email);
+            this.bancoDeDados.AdicionarPessoa(novaPessoa);
+            console.log("Pessoa adicionada com sucesso!");
+            this.exibirMenu();
+          } catch (error) {
+            console.log(error.message);
+            this.exibirMenu();
+          }
+        });
+      });
+    });
+  }
+
+
+  private listarPessoas() {
+    this.bancoDeDados.ListarPessoas();
+    this.exibirMenu();
+  }
+
+  private buscarPorNome() {
+    this.readlineInterface.question("Nome da pessoa a ser buscada: ", (nome) => {
+      try {
+        const pessoaEncontrada = this.bancoDeDados.BuscarPorNome(nome);
+        console.log("Pessoa encontrada:");
+        console.log(pessoaEncontrada);
+      } catch (error) {
+        console.log(error.message);
+      }
+      this.exibirMenu();
+    });
+  }
+
+  private atualizarPessoa() {
+    this.readlineInterface.question("Nome da pessoa a ser atualizada: ", (nome) => {
+      this.readlineInterface.question("Nova idade (pressione Enter para manter a mesma idade): ", (idadeInput) => {
+        const idade = idadeInput !== "" ? parseInt(idadeInput) : undefined;
+        this.readlineInterface.question("Novo email (pressione Enter para manter o mesmo email): ", (email) => {
+          try {
+            this.bancoDeDados.AtualizarPessoa(nome, idade, email || undefined);
+            console.log("Pessoa atualizada com sucesso!");
+          } catch (error) {
+            console.log(error.message);
+          }
+          this.exibirMenu();
+        });
+      });
+    });
+  }
+
+  private deletarPessoa() {
+    this.readlineInterface.question("Nome da pessoa a ser deletada: ", (nome) => {
+      try {
+        this.bancoDeDados.DeletarPessoa(nome);
+      } catch (error) {
+        console.log(error.message);
+      }
+      this.exibirMenu();
+    });
+  }
 }
 
-function main(): void {
-    let escolha: number;
-
-    exibirMenu();
-
-    do {
-        const opcaoUsuario = prompt("Digite a opção desejada:")
-        escolha = opcaoUsuario ? parseInt(opcaoUsuario) : 10;
-
-        switch (escolha) {
-            case 1:
-                newBanco.ListarPessoas();
-                break;
-            case 2:
-                newBanco.AdicionarPessoa(new Pessoa("Wesley", 19, "wesleyprofessor@email.com"));
-                break;
-            case 3:
-                newBanco.AtualizarPessoa("Wesley", 20, "wesleymestre@email.com");
-                break;
-            case 4:
-                newBanco.BuscarPorNome("Wesley");
-                break;
-            case 5:
-                newBanco.DeletarPessoa("Cleiton");
-                break;
-            case 0:
-                console.log("Obrigado por utilizar nosso sistema")
-                break;
-            default:
-                console.log("Essa opção não existe! Por favor, digite novamente ou digite 0 para sair");
-                break;
-        }
-    } while (escolha < 0 || escolha > 5);
-}
-
-main();
+// Executar o menu
+const menu = new Menu();
+menu.exibirMenu();
